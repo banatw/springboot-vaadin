@@ -7,15 +7,13 @@ import com.example.application.views.helloworld.HelloWorldView;
 import com.example.application.views.pegawai.Pegawai;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -24,14 +22,17 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinSession;
 
 /**
  * The main view is a top-level placeholder for other views.
  */
 @JsModule("./styles/shared-styles.js")
 @CssImport("./styles/views/main/main-view.css")
+@Route("mainview")
 @PWA(name = "springboot-vaadin", shortName = "springboot-vaadin", enableInstallPrompt = false)
 public class MainView extends AppLayout {
 
@@ -55,10 +56,14 @@ public class MainView extends AppLayout {
         layout.add(new DrawerToggle());
         viewTitle = new H1();
         layout.add(viewTitle);
-        MenuBar menuBar = new MenuBar();
-        menuBar.addItem("Logout");
-        menuBar.setClassName("menuRight");
-        layout.add(menuBar);
+        // MenuBar menuBar = new MenuBar();
+        // menuBar.addItem("Logout", event -> {
+        // VaadinSession.getCurrent().getSession().invalidate();
+        // });
+        // menuBar.setClassName("menuRight");
+        // layout.add(menuBar);
+        Image img = new Image();
+        layout.add(new Image("images/user.svg", "springboot-vaadin logo"));
         return layout;
     }
 

@@ -4,10 +4,13 @@ import com.example.application.entity.Customer;
 import com.example.application.entity.User;
 import com.example.application.repo.CustomerRepo;
 import com.example.application.repo.UserRepo;
+import com.example.application.views.login.LoginView;
 import com.github.javafaker.Faker;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.UIInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
+import com.vaadin.flow.server.VaadinSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +33,6 @@ public class Application extends SpringBootServletInitializer implements Command
         SpringApplication.run(Application.class, args);
     }
 
-
     @Override
     public void run(String... args) throws Exception {
         Faker faker = new Faker();
@@ -39,7 +41,7 @@ public class Application extends SpringBootServletInitializer implements Command
             customerRepo.save(new Customer(faker.name().firstName(), faker.name().lastName()));
         }
 
-        userRepo.save(new User("admin","admin"));
+        userRepo.save(new User("admin", "admin"));
     }
 
     @Service
@@ -49,7 +51,9 @@ public class Application extends SpringBootServletInitializer implements Command
         public void serviceInit(ServiceInitEvent serviceInitEvent) {
             serviceInitEvent.getSource().addUIInitListener(uiInitEvent -> {
                 uiInitEvent.getUI().addBeforeEnterListener(beforeEnterEvent -> {
-
+                    if (VaadinSession.getCurrent().getAttribute("user") == null) {
+                        beforeEnterEvent.forwardTo(LoginView.class);
+                    }
                 });
             });
         }
