@@ -9,6 +9,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
@@ -56,14 +57,13 @@ public class MainView extends AppLayout {
         layout.add(new DrawerToggle());
         viewTitle = new H1();
         layout.add(viewTitle);
-        // MenuBar menuBar = new MenuBar();
-        // menuBar.addItem("Logout", event -> {
-        // VaadinSession.getCurrent().getSession().invalidate();
-        // });
-        // menuBar.setClassName("menuRight");
-        // layout.add(menuBar);
-        Image img = new Image();
-        layout.add(new Image("images/user.svg", "springboot-vaadin logo"));
+        Image img = new Image("images/user.svg", "springboot-vaadin logo");
+        ContextMenu contextMenu = new ContextMenu(img);
+        contextMenu.addItem("Logout", event -> {
+            VaadinSession.getCurrent().getSession().invalidate();
+        });
+        contextMenu.setOpenOnClick(true);
+        layout.add(img);
         return layout;
     }
 

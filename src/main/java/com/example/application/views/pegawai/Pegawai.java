@@ -5,7 +5,6 @@ import com.example.application.repo.CustomerRepo;
 import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
 
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -23,6 +22,7 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.vaadin.reports.PrintPreviewReport;
 
 import java.util.List;
 
@@ -35,21 +35,11 @@ public class Pegawai extends VerticalLayout {
     @Autowired
     private CustomerRepo customerRepo;
     private Grid<Customer> customerGrid;
-    private static final long serialVersionUID = 1L;
     private Action act;
-
 
     private class InnerDialog extends Dialog {
 
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         *
-         */
-        private void initiate(Customer customer) {
+        public InnerDialog(Customer customer) {
             FormLayout formLayout = new FormLayout();
 
             TextField tFieldFirstName = new TextField("First Name");
@@ -85,41 +75,34 @@ public class Pegawai extends VerticalLayout {
             add(formLayout, horizontalLayout);
         }
 
-        public InnerDialog(Customer customer) {
-            addAttachListener(event -> {
-                if(event.isInitialAttach()) initiate(customer);
-            });
-        }
-
     }
 
     public Pegawai() {
-        addAttachListener(event -> {
-            if(event.isInitialAttach()) initiate();
-        });
-    }
-
-    private void initiate() {
-        final TextField filterField = new TextField();
+        TextField filterField = new TextField();
         filterField.setValue("");
         filterField.setPlaceholder("search");
-        final Button buttonAdd = new Button(new Icon(VaadinIcon.PLUS));
+        Button buttonAdd = new Button(new Icon(VaadinIcon.PLUS));
         buttonAdd.addClickListener(e -> {
             act = Action.ADD;
             InnerDialog innerDialog = new InnerDialog(null);
             innerDialog.open();
         });
-        final HorizontalLayout bLayout = new HorizontalLayout();
-        bLayout.add(filterField, buttonAdd);
+        HorizontalLayout bLayout = new HorizontalLayout();
+        Button buttonPrintPreview = new Button("Print", event -> {
+            PrintPreview printPreview = new PrintPreview(customerRepo);
+            printPreview.open();
+        });
+        bLayout.add(filterField, buttonAdd, buttonPrintPreview);
         listCustomer("");
         add(bLayout, customerGrid);
     }
-    void listCustomer(final String filterText) {
+
+    void listCustomer(String filterText) {
         // customerGrid.setDataProvider(null);
         DataProvider<Customer, Void> dataProvider = DataProvider.fromCallbacks(query -> {
-            final int offset = query.getOffset();
-            final int limit = query.getLimit();
-            final int page = offset / limit;
+            int offset = query.getOffset();
+            int limit = query.getLimit();
+            int page = offset / limit;
             List<Customer> customers = customerRepo
                     .findAll(PageRequest.of(page, limit, Sort.Direction.DESC, "auditDate")).toList();
 
@@ -129,11 +112,8 @@ public class Pegawai extends VerticalLayout {
         customerGrid.setDataProvider(dataProvider);
         customerGrid.setColumns("firstName", "lastName");
 
-        // customerGrid.setItems(customerRepo.findAll(Sort.by(Sort.Direction.DESC,
-        // "auditDate")));
-
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
-            final Button buttonEdit = new Button("Edit", e -> {
+            Button buttonEdit = new Button("Edit", e -> {
                 act = Action.EDIT;
                 InnerDialog innerDialog = new InnerDialog(item);
                 // System.out.println(item.getFirstName());
@@ -143,13 +123,10 @@ public class Pegawai extends VerticalLayout {
             return buttonEdit;
         }));
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
-            final Button buttonDelete = new Button("Delete",
-                    e -> Notification.show(String.valueOf(item.getIdCustomer())));
+            Button buttonDelete = new Button("Delete", e -> Notification.show(String.valueOf(item.getIdCustomer())));
             return buttonDelete;
         }));
-        // customerGrid.addColumn(new ComponentRenderer<>(item ->{
-        // final Button
-        // }));
 
     }
+
 }
