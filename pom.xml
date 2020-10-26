@@ -13,7 +13,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <vaadin.version>14.4.1</vaadin.version>
-
     </properties>
 
     <parent>
@@ -146,6 +145,11 @@
             <groupId>org.vaadin.reportui</groupId>
             <artifactId>report-ui</artifactId>
             <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.alejandro</groupId>
+            <artifactId>pdf-browser</artifactId>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>

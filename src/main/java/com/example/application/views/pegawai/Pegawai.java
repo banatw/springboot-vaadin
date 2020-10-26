@@ -1,11 +1,14 @@
 package com.example.application.views.pegawai;
 
+import java.util.List;
+
 import com.example.application.entity.Customer;
 import com.example.application.repo.CustomerRepo;
 import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
-
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.charts.model.Frame;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -14,17 +17,16 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.vaadin.reports.PrintPreviewReport;
-
-import java.util.List;
 
 @Route(value = "pegawai", layout = MainView.class)
 @PageTitle("Pegawai")
@@ -95,6 +97,7 @@ public class Pegawai extends VerticalLayout {
         bLayout.add(filterField, buttonAdd, buttonPrintPreview);
         listCustomer("");
         add(bLayout, customerGrid);
+
     }
 
     void listCustomer(String filterText) {
@@ -125,6 +128,12 @@ public class Pegawai extends VerticalLayout {
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
             Button buttonDelete = new Button("Delete", e -> Notification.show(String.valueOf(item.getIdCustomer())));
             return buttonDelete;
+        }));
+        customerGrid.addColumn(new ComponentRenderer<>(item -> {
+            return new Button("tes", event -> {
+                PdfPreview pdfPreview = new PdfPreview();
+                pdfPreview.open();
+            });
         }));
 
     }
