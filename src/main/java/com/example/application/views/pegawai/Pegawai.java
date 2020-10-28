@@ -1,11 +1,15 @@
 package com.example.application.views.pegawai;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import com.example.application.entity.Customer;
 import com.example.application.repo.CustomerRepo;
 import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
+import com.example.application.views.preview.PdfPreview;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.model.Frame;
@@ -38,6 +42,9 @@ public class Pegawai extends VerticalLayout {
     private CustomerRepo customerRepo;
     private Grid<Customer> customerGrid;
     private Action act;
+
+    @Autowired
+    private DataSource dataSource;
 
     private class InnerDialog extends Dialog {
 
@@ -91,8 +98,8 @@ public class Pegawai extends VerticalLayout {
         });
         HorizontalLayout bLayout = new HorizontalLayout();
         Button buttonPrintPreview = new Button("Print", event -> {
-            PrintPreview printPreview = new PrintPreview(customerRepo);
-            printPreview.open();
+            PdfPreview pdfPreview = new PdfPreview(dataSource, null, "all.jrxml");
+            pdfPreview.open();
         });
         bLayout.add(filterField, buttonAdd, buttonPrintPreview);
         listCustomer("");
@@ -130,8 +137,10 @@ public class Pegawai extends VerticalLayout {
             return buttonDelete;
         }));
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
-            return new Button("tes", event -> {
-                PdfPreview pdfPreview = new PdfPreview();
+            return new Button("Cetak", event -> {
+                HashMap<String, Object> params = new HashMap<String, Object>();
+                params.put("CustomerId", item.getIdCustomer());
+                PdfPreview pdfPreview = new PdfPreview(dataSource, params, "tes.jrxml");
                 pdfPreview.open();
             });
         }));

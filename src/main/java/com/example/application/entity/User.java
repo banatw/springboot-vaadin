@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Data
 @RequiredArgsConstructor
 @Entity
 @NoArgsConstructor
+@Table(name = "user_")
 public class User {
     @Id
     @NonNull
