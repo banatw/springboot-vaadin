@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -63,9 +64,10 @@ public class PdfPreview extends Dialog {
                     pdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
                     pdfExporter.exportReport();
                     byte[] buf = byteArrayOutputStream.toByteArray();
+                    byteArrayOutputStream.close();
                     return new ByteArrayInputStream(buf);
 
-                } catch (JRException | SQLException e) {
+                } catch (JRException | SQLException | IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
