@@ -70,31 +70,42 @@
 	<columnHeader>
 		<band height="50">
 			<staticText>
-				<reportElement x="120" y="10" width="340" height="37" uuid="f619055a-9c45-4b4a-85c3-a6ca5d1d92d8"/>
+				<reportElement x="69" y="0" width="100" height="30" uuid="57d30a94-8b1e-4317-8597-662cce72838e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="60604bf8-c56b-449f-86a8-7ddf626149e5"/>
+				</reportElement>
 				<textElement>
-					<font fontName="Comic Sans MS" size="22" isBold="false" isItalic="true"/>
+					<font fontName="Comic Sans MS" size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[fdfdfdfdfd]]></text>
+				<text><![CDATA[first_name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="0" width="100" height="30" uuid="82f2f333-2b3a-4fbc-9e67-d05ab4a665b8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b48306a0-09bb-4478-b961-0dee59c494bb"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Comic Sans MS" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[last_name]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="49">
 			<textField>
-				<reportElement x="70" y="10" width="100" height="30" uuid="5123c4fd-5a94-4687-b65f-76f200cd4476">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="29f323a7-9177-4710-bf53-fa6b65845d7b"/>
+				<reportElement x="70" y="0" width="100" height="30" uuid="9fb5cb75-b7d8-4aae-b538-9304b0475354">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="60604bf8-c56b-449f-86a8-7ddf626149e5"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Calibri" size="14"/>
+					<font fontName="Comic Sans MS"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{first_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="10" width="100" height="30" uuid="21319960-d084-4261-b993-34fa18814c7e">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c18d7acf-fb36-4fb0-963a-1ae3534bafdd"/>
+				<reportElement x="314" y="2" width="100" height="30" uuid="125f6e9e-c223-4711-a51c-6b59c0b57e5f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b48306a0-09bb-4478-b961-0dee59c494bb"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Calibri" size="14"/>
+					<font fontName="Comic Sans MS"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{last_name}]]></textFieldExpression>
 			</textField>

@@ -7,7 +7,6 @@ import com.example.application.repo.UserRepo;
 import com.example.application.views.login.LoginView;
 import com.github.javafaker.Faker;
 import com.vaadin.flow.server.ServiceInitEvent;
-import com.vaadin.flow.server.UIInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.server.VaadinSession;
 
@@ -17,7 +16,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Service;
-import org.vaadin.artur.helpers.LaunchUtil;
 
 /**
  * The entry point of the Spring Boot application.

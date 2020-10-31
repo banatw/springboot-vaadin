@@ -2,9 +2,6 @@ package com.example.application.views.preview;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -15,7 +12,6 @@ import javax.sql.DataSource;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
-import com.vaadin.flow.server.VaadinSession;
 
 import org.vaadin.alejandro.PdfBrowserViewer;
 
