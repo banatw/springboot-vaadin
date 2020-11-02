@@ -17,6 +17,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Service;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * The entry point of the Spring Boot application.
  */
@@ -38,8 +40,9 @@ public class Application extends SpringBootServletInitializer implements Command
         for (int i = 0; i < 100; i++) {
             customerRepo.save(new Customer(faker.name().firstName(), faker.name().lastName()));
         }
-
-        userRepo.save(new User("admin", "admin"));
+        String password = "admin";
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        userRepo.save(new User("admin", bcryptHashString));
     }
 
     @Service

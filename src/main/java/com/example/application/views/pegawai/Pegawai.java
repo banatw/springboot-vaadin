@@ -36,8 +36,8 @@ public class Pegawai extends VerticalLayout {
      */
     @Autowired
     private CustomerRepo customerRepo;
-    private static Grid<Customer> customerGrid;
-    private static Action act;
+    private Grid<Customer> customerGrid;
+    private Action act;
 
     @Autowired
     private DataSource dataSource;

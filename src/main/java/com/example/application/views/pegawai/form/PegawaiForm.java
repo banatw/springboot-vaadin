@@ -3,7 +3,6 @@ package com.example.application.views.pegawai.form;
 import com.example.application.entity.Customer;
 import com.example.application.repo.CustomerRepo;
 import com.example.application.views.Action;
-import com.example.application.views.pegawai.Pegawai;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
