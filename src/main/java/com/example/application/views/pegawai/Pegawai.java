@@ -13,6 +13,7 @@ import com.example.application.views.pegawai.form.PegawaiForm;
 import com.example.application.views.preview.PdfPreview;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -28,9 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import de.codecamp.vaadin.components.messagedialog.MessageDialog;
+
 @Route(value = "pegawai", layout = MainView.class)
 @PageTitle("Pegawai")
-public class Pegawai extends VerticalLayout {
+public class Pegawai extends Div {
     /**
      *
      */
@@ -38,6 +41,7 @@ public class Pegawai extends VerticalLayout {
     private CustomerRepo customerRepo;
     private Grid<Customer> customerGrid;
     private Action act;
+    private VerticalLayout vLayout = new VerticalLayout();
 
     @Autowired
     private DataSource dataSource;
@@ -59,7 +63,10 @@ public class Pegawai extends VerticalLayout {
         });
         bLayout.add(filterField, buttonAdd, buttonPrintPreview);
         refreshGrid("");
-        add(bLayout, customerGrid);
+        setSizeFull();
+        vLayout.setSizeFull();
+        vLayout.add(bLayout, customerGrid);
+        add(vLayout);
 
     }
 
@@ -89,7 +96,17 @@ public class Pegawai extends VerticalLayout {
             return buttonEdit;
         }));
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
-            Button buttonDelete = new Button("Delete", e -> Notification.show(String.valueOf(item.getIdCustomer())));
+            Button buttonDelete = new Button("Delete", e -> {
+                MessageDialog messageDialog = new MessageDialog().setTitle("Perhatian", VaadinIcon.WARNING.create())
+                        .setMessage("Apakah anda yakin?");
+                messageDialog.addButton().text("Tidak").icon(VaadinIcon.WARNING).error()
+                        .onClick(ev -> Notification.show("Discarded.")).closeOnClick();
+                messageDialog.addButton().text("Ya").primary().onClick(ev -> {
+                    customerRepo.deleteById(item.getIdCustomer());
+                    customerGrid.getDataProvider().refreshAll();
+                }).closeOnClick();
+                messageDialog.open();
+            });
             return buttonDelete;
         }));
         customerGrid.addColumn(new ComponentRenderer<>(item -> {

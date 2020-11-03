@@ -9,7 +9,9 @@ import java.util.HashMap;
 
 import javax.sql.DataSource;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
 
@@ -30,6 +32,7 @@ public class PdfPreview extends Dialog {
     /**
      *
      */
+    private VerticalLayout vLayout = new VerticalLayout();
 
     private static final long serialVersionUID = 1L;
 
@@ -71,7 +74,11 @@ public class PdfPreview extends Dialog {
             }
 
         }));
-        add(viewer);
+        viewer.setHeight("100%");
+        vLayout.add(new Button("Close", e -> close()), viewer);
+        vLayout.setSizeFull();
+        setSizeFull();
+        add(vLayout);
         setCloseOnEsc(true);
         setWidth("100%");
     }

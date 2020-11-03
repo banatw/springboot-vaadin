@@ -32,7 +32,7 @@ import com.vaadin.flow.server.VaadinSession;
 @JsModule("./styles/shared-styles.js")
 @CssImport("./styles/views/main/main-view.css")
 @Route("mainview")
-@PWA(name = "springboot-vaadin", shortName = "springboot-vaadin", enableInstallPrompt = false)
+@PWA(name = "springboot-vaadin", shortName = "springboot-vaadin", enableInstallPrompt = true)
 public class MainView extends AppLayout {
 
     private final Tabs menu;

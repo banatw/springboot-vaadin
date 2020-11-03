@@ -44,8 +44,8 @@ public class PegawaiForm extends Dialog {
             close();
         });
         Button btnCancel = new Button("Batal", e -> {
-            customerGrid.getDataProvider().refreshAll();
-            customerGrid.scrollToStart();
+            // customerGrid.getDataProvider().refreshAll();
+            // customerGrid.scrollToStart();
             close();
         });
         horizontalLayout.add(btnSimpan, btnCancel);

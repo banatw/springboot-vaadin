@@ -37,7 +37,7 @@ public class Application extends SpringBootServletInitializer implements Command
     public void run(String... args) throws Exception {
         Faker faker = new Faker();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 300; i++) {
             customerRepo.save(new Customer(faker.name().firstName(), faker.name().lastName()));
         }
         String password = "admin";
