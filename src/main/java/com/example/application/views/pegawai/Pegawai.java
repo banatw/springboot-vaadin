@@ -2,6 +2,7 @@ package com.example.application.views.pegawai;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -11,6 +12,7 @@ import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
 import com.example.application.views.pegawai.form.PegawaiForm;
 import com.example.application.views.preview.PdfPreview;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -53,7 +55,7 @@ public class Pegawai extends Div {
         Button buttonAdd = new Button(new Icon(VaadinIcon.PLUS));
         buttonAdd.addClickListener(e -> {
             act = Action.ADD;
-            PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, null, customerGrid);
+            PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, Optional.empty(), customerGrid);
             pegawaiForm.open();
         });
         HorizontalLayout bLayout = new HorizontalLayout();
@@ -88,7 +90,8 @@ public class Pegawai extends Div {
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
             Button buttonEdit = new Button("Edit", e -> {
                 act = Action.EDIT;
-                PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, item.getIdCustomer(), customerGrid);
+                PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, Optional.of(item.getIdCustomer()),
+                        customerGrid);
                 // System.out.println(item.getFirstName());
                 pegawaiForm.open();
             });
