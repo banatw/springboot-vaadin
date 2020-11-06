@@ -3,7 +3,6 @@ package com.example.application.views.login;
 import java.util.Optional;
 
 import com.example.application.entity.User;
-import com.example.application.repo.CustomerRepo;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.login.LoginOverlay;

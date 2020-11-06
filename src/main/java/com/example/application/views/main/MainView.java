@@ -92,7 +92,7 @@ public class MainView extends AppLayout {
 
     private Component[] createMenuItems() {
         return new Tab[] { createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),
-                createTab("Pegawai", Pegawai.class) };
+                createTab("Student", Pegawai.class) };
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
