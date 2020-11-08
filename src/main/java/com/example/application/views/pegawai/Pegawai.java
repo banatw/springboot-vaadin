@@ -12,7 +12,6 @@ import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
 import com.example.application.views.pegawai.form.PegawaiForm;
 import com.example.application.views.preview.PdfPreview;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;

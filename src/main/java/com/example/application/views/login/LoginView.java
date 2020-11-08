@@ -1,8 +1,11 @@
 package com.example.application.views.login;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.example.application.entity.User;
+import com.example.application.entity.Menu;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.login.LoginOverlay;
@@ -33,6 +36,11 @@ public class LoginView extends LoginOverlay {
                         user.getPassword());
                 if (result.verified) {
                     VaadinSession.getCurrent().setAttribute("user", user.getUsername());
+
+                    user.getRoles().stream().forEachOrdered(role -> {
+                        List<Menu> mList = role.getMenus().stream().collect(Collectors.toList());
+                        VaadinSession.getCurrent().setAttribute("menus", mList);
+                    });
                     getUI().get().navigate(MainView.class);
                 } else {
                     setError(true);

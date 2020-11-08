@@ -1,10 +1,15 @@
 package com.example.application.views.main;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.example.application.entity.Menu;
+import com.example.application.repo.UserRepo;
 import com.example.application.views.about.AboutView;
+import com.example.application.views.admin.AdminPage;
 import com.example.application.views.helloworld.HelloWorldView;
 import com.example.application.views.pegawai.Pegawai;
+import com.example.application.views.user.UserPage;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -26,6 +31,8 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * The main view is a top-level placeholder for other views.
  */
@@ -37,6 +44,8 @@ public class MainView extends AppLayout {
 
     private final Tabs menu;
     private H1 viewTitle;
+    @Autowired
+    private UserRepo userRepo;
 
     public MainView() {
         setPrimarySection(Section.DRAWER);
@@ -87,18 +96,31 @@ public class MainView extends AppLayout {
         tabs.addThemeVariants(TabsVariant.LUMO_MINIMAL);
         tabs.setId("tabs");
         tabs.add(createMenuItems());
+
+        List<Menu> menus = (List<Menu>) VaadinSession.getCurrent().getAttribute("menus");
+        for (Menu menu : menus) {
+            // System.out.println(menu.getMenuName());
+            tabs.getChildren().forEachOrdered(tab -> {
+                if (tab.getId().get().equalsIgnoreCase(menu.getMenuName())) {
+                    tab.setVisible(true);
+                }
+            });
+        }
         return tabs;
     }
 
     private Component[] createMenuItems() {
         return new Tab[] { createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),
-                createTab("Student", Pegawai.class) };
+                createTab("Student", Pegawai.class), createTab("Admin", AdminPage.class),
+                createTab("User", UserPage.class) };
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
         final Tab tab = new Tab();
         tab.add(new RouterLink(text, navigationTarget));
+        tab.setId(navigationTarget.getSimpleName());
         ComponentUtil.setData(tab, Class.class, navigationTarget);
+        tab.setVisible(false);
         return tab;
     }
 
