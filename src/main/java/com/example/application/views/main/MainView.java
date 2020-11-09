@@ -1,9 +1,9 @@
 package com.example.application.views.main;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.example.application.entity.Menu;
+import com.example.application.entity.User;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.about.AboutView;
 import com.example.application.views.admin.AdminPage;
@@ -27,6 +27,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
@@ -38,14 +39,15 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @JsModule("./styles/shared-styles.js")
 @CssImport("./styles/views/main/main-view.css")
-@Route("mainview")
+@Route(value = "mainview")
+@RouteAlias(value = "")
 @PWA(name = "springboot-vaadin", shortName = "springboot-vaadin", enableInstallPrompt = true)
 public class MainView extends AppLayout {
 
     private final Tabs menu;
     private H1 viewTitle;
-    @Autowired
-    private UserRepo userRepo;
+
+    User user = (User) VaadinSession.getCurrent().getAttribute("user");
 
     public MainView() {
         setPrimarySection(Section.DRAWER);
@@ -65,6 +67,7 @@ public class MainView extends AppLayout {
         viewTitle = new H1();
         layout.add(viewTitle);
         Image img = new Image("images/user.svg", "springboot-vaadin logo");
+        img.setTitle(user.getUsername());
         ContextMenu contextMenu = new ContextMenu(img);
         contextMenu.addItem("Logout", event -> {
             VaadinSession.getCurrent().getSession().invalidate();
@@ -97,15 +100,14 @@ public class MainView extends AppLayout {
         tabs.setId("tabs");
         tabs.add(createMenuItems());
 
-        List<Menu> menus = (List<Menu>) VaadinSession.getCurrent().getAttribute("menus");
-        for (Menu menu : menus) {
-            // System.out.println(menu.getMenuName());
-            tabs.getChildren().forEachOrdered(tab -> {
-                if (tab.getId().get().equalsIgnoreCase(menu.getMenuName())) {
-                    tab.setVisible(true);
-                }
+        user.getRoles().stream().forEach(role -> {
+            role.getMenus().stream().collect(Collectors.toList()).stream().forEach(menu -> {
+                tabs.getChildren().forEach(tab -> {
+                    if (tab.getId().get().equalsIgnoreCase(menu.getMenuName()))
+                        tab.setVisible(true);
+                });
             });
-        }
+        });
         return tabs;
     }
 

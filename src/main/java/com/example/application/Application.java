@@ -1,12 +1,7 @@
 package com.example.application;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.example.application.entity.Customer;
 import com.example.application.entity.Menu;
@@ -72,7 +67,7 @@ public class Application extends SpringBootServletInitializer implements Command
         roleRepo.save(new Role("ROLE_USER", menuUser));
 
         List<Role> roles = new ArrayList<Role>();
-        // roles.add(roleRepo.findByRoleName("ROLE_ADMIN"));
+        roles.add(roleRepo.findByRoleName("ROLE_ADMIN"));
         roles.add(roleRepo.findByRoleName("ROLE_USER"));
         String password = "admin";
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
@@ -84,30 +79,32 @@ public class Application extends SpringBootServletInitializer implements Command
     @Service
     class MyServiceInitListener implements VaadinServiceInitListener {
 
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public void serviceInit(ServiceInitEvent serviceInitEvent) {
             serviceInitEvent.getSource().addUIInitListener(uiInitEvent -> {
 
                 uiInitEvent.getUI().addBeforeEnterListener(beforeEnterEvent -> {
-                    if (VaadinSession.getCurrent().getAttribute("user") == null
-                            && VaadinSession.getCurrent().getAttribute("menus") == null) {
+                    String currPage = beforeEnterEvent.getNavigationTarget().getSimpleName();
+                    if (VaadinSession.getCurrent().getAttribute("user") != null) {
+                        User user = (User) VaadinSession.getCurrent().getAttribute("user");
+                        if (!currPage.equalsIgnoreCase("LoginView") && !currPage.equalsIgnoreCase("MainView")) {
+                            List<String> allowedModuls = new ArrayList<>();
+                            user.getRoles().stream().forEach(role -> {
+                                role.getMenus().stream().distinct()
+                                        .forEach(menu -> allowedModuls.add(menu.getMenuName()));
+                            });
+                            if (!allowedModuls.contains(currPage))
+                                beforeEnterEvent.forwardTo(LoginView.class);
+                        }
+                    } else {
                         beforeEnterEvent.forwardTo(LoginView.class);
                     }
-                    String currPage = beforeEnterEvent.getNavigationTarget().getSimpleName();
 
-                    // if (!currPage.equalsIgnoreCase("LoginView")) {
-                    if (!currPage.equalsIgnoreCase("MainView") && !currPage.equalsIgnoreCase("LoginView")) {
-                        List<Menu> menus = (List<Menu>) VaadinSession.getCurrent().getAttribute("menus");
-                        Boolean ada = false;
-                        for (Menu menu : menus) {
-                            if (menu.getMenuName().equalsIgnoreCase(currPage)) {
-                                ada = true;
-                            }
-                        }
-                        if (!ada)
-                            beforeEnterEvent.forwardTo(LoginView.class);
-                    }
-                    // }
                 });
             });
         }

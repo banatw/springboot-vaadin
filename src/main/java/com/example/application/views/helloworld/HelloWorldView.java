@@ -13,7 +13,6 @@ import com.vaadin.flow.router.RouteAlias;
 @Route(value = "hello", layout = MainView.class)
 @PageTitle("Hello World")
 @CssImport("./styles/views/helloworld/hello-world-view.css")
-@RouteAlias(value = "", layout = MainView.class)
 public class HelloWorldView extends HorizontalLayout {
 
     private TextField name;
