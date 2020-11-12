@@ -1,7 +1,9 @@
 package com.example.application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.application.entity.Customer;
 import com.example.application.entity.Menu;
@@ -44,6 +46,10 @@ public class Application extends SpringBootServletInitializer implements Command
         SpringApplication.run(Application.class, args);
     }
 
+    private String generatePassword(String password) {
+        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    }
+
     @Override
     public void run(String... args) throws Exception {
         Faker faker = new Faker();
@@ -69,10 +75,15 @@ public class Application extends SpringBootServletInitializer implements Command
         List<Role> roles = new ArrayList<Role>();
         roles.add(roleRepo.findByRoleName("ROLE_ADMIN"));
         roles.add(roleRepo.findByRoleName("ROLE_USER"));
-        String password = "admin";
-        String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-        User user = new User("admin", bcryptHashString);
-        user.setRoles(roles);
+        // String password = "admin";
+        // String bcryptHashString = BCrypt.withDefaults().hashToString(12,
+        // password.toCharArray());
+        User user = new User("admin", generatePassword("admin"));
+        user.setRoles(new ArrayList<>(
+                Arrays.asList(roleRepo.findByRoleName("ROLE_ADMIN"), roleRepo.findByRoleName("ROLE_USER"))));
+        userRepo.save(user);
+        user = new User("user", generatePassword("user"));
+        user.setRoles(new ArrayList<>(Arrays.asList(roleRepo.findByRoleName("ROLE_USER"))));
         userRepo.save(user);
     }
 
@@ -84,21 +95,25 @@ public class Application extends SpringBootServletInitializer implements Command
          */
         private static final long serialVersionUID = 1L;
 
+        List<String> getMenus(User user) {
+            List<String> allowedMenus = new ArrayList<String>();
+            user.getRoles().stream().forEach(role -> {
+                role.getMenus().stream().forEach(menu -> {
+                    allowedMenus.add(menu.getMenuName());
+                });
+            });
+            return allowedMenus;
+        }
+
         @Override
         public void serviceInit(ServiceInitEvent serviceInitEvent) {
             serviceInitEvent.getSource().addUIInitListener(uiInitEvent -> {
-
                 uiInitEvent.getUI().addBeforeEnterListener(beforeEnterEvent -> {
                     String currPage = beforeEnterEvent.getNavigationTarget().getSimpleName();
                     if (VaadinSession.getCurrent().getAttribute("user") != null) {
                         User user = (User) VaadinSession.getCurrent().getAttribute("user");
                         if (!currPage.equalsIgnoreCase("LoginView") && !currPage.equalsIgnoreCase("MainView")) {
-                            List<String> allowedModuls = new ArrayList<>();
-                            user.getRoles().stream().forEach(role -> {
-                                role.getMenus().stream().distinct()
-                                        .forEach(menu -> allowedModuls.add(menu.getMenuName()));
-                            });
-                            if (!allowedModuls.contains(currPage))
+                            if (!getMenus(user).contains(currPage))
                                 beforeEnterEvent.forwardTo(LoginView.class);
                         }
                     } else {
