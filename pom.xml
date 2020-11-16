@@ -146,11 +146,11 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.vaadin.alejandro</groupId>
             <artifactId>pdf-browser</artifactId>
             <version>3.0.1</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench</artifactId>

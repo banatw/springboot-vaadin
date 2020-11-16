@@ -15,7 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
 
-import org.vaadin.alejandro.PdfBrowserViewer;
+// import org.vaadin.alejandro.PdfBrowserViewer;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -37,7 +37,7 @@ public class PdfPreview extends Dialog {
     private static final long serialVersionUID = 1L;
 
     public PdfPreview(DataSource dataSource, HashMap<String, Object> parameters, String namaFile) {
-        PdfBrowserViewer viewer = new PdfBrowserViewer(new StreamResource("report.pdf", new InputStreamFactory() {
+        EmbeddedPdf viewer = new EmbeddedPdf(new StreamResource("report.pdf", new InputStreamFactory() {
 
             /**
              *
@@ -75,7 +75,10 @@ public class PdfPreview extends Dialog {
 
         }));
         viewer.setHeight("100%");
-        vLayout.add(new Button("Close", e -> close()), viewer);
+        vLayout.add(new Button("Close", e -> close()), new Button("Cetak", e -> {
+            System.out.println(viewer.getElement().getAttribute("data").getBytes());
+        }), viewer);
+        vLayout.add();
         vLayout.setSizeFull();
         setSizeFull();
         add(vLayout);
