@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import com.example.application.entity.Customer;
 import com.example.application.repo.CustomerRepo;
+import com.example.application.repo.NilaiRepo;
 import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
 import com.example.application.views.pegawai.form.PegawaiForm;
@@ -40,12 +41,15 @@ public class Pegawai extends Div {
      */
     @Autowired
     private CustomerRepo customerRepo;
-    private Grid<Customer> customerGrid;
+    private Grid<Customer> customerGrid = new Grid<>(Customer.class);
     private Action act;
     private VerticalLayout vLayout = new VerticalLayout();
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private NilaiRepo nilaiRepo;
 
     public Pegawai() {
         TextField filterField = new TextField();
@@ -54,7 +58,7 @@ public class Pegawai extends Div {
         Button buttonAdd = new Button(new Icon(VaadinIcon.PLUS));
         buttonAdd.addClickListener(e -> {
             act = Action.ADD;
-            PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, Optional.empty(), customerGrid);
+            PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, Optional.empty(), customerGrid, nilaiRepo);
             pegawaiForm.open();
         });
         HorizontalLayout bLayout = new HorizontalLayout();
@@ -82,7 +86,7 @@ public class Pegawai extends Div {
 
             return customers.stream();
         }, query -> (int) customerRepo.count());
-        customerGrid = new Grid<>(Customer.class);
+
         customerGrid.setDataProvider(dataProvider);
         customerGrid.setColumns("firstName", "lastName");
 
@@ -90,7 +94,7 @@ public class Pegawai extends Div {
             Button buttonEdit = new Button("Edit", e -> {
                 act = Action.EDIT;
                 PegawaiForm pegawaiForm = new PegawaiForm(customerRepo, act, Optional.of(item.getIdCustomer()),
-                        customerGrid);
+                        customerGrid, nilaiRepo);
                 // System.out.println(item.getFirstName());
                 pegawaiForm.open();
             });

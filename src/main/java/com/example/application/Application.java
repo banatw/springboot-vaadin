@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.application.entity.Customer;
+import com.example.application.entity.Matakuliah;
 import com.example.application.entity.Menu;
+import com.example.application.entity.Nilai;
 import com.example.application.entity.Role;
 import com.example.application.entity.User;
 import com.example.application.repo.CustomerRepo;
+import com.example.application.repo.MatakuliahRepo;
 import com.example.application.repo.MenuRepo;
+import com.example.application.repo.NilaiRepo;
 import com.example.application.repo.RoleRepo;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.login.LoginView;
@@ -41,6 +45,10 @@ public class Application extends SpringBootServletInitializer implements Command
     private RoleRepo roleRepo;
     @Autowired
     private MenuRepo menuRepo;
+    @Autowired
+    private MatakuliahRepo matakuliahRepo;
+    @Autowired
+    private NilaiRepo nilaiRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -54,8 +62,26 @@ public class Application extends SpringBootServletInitializer implements Command
     public void run(String... args) throws Exception {
         Faker faker = new Faker();
 
-        for (int i = 0; i < 300; i++) {
-            customerRepo.save(new Customer(faker.name().firstName(), faker.name().lastName()));
+        matakuliahRepo.save(new Matakuliah(1, "Matematika"));
+        matakuliahRepo.save(new Matakuliah(2, "Bahasa Inggris"));
+        matakuliahRepo.save(new Matakuliah(3, "Fisika"));
+        matakuliahRepo.save(new Matakuliah(4, "Biologi"));
+
+        for (int i = 0; i < 100; i++) {
+            List<Nilai> nilais = new ArrayList<>();
+            Nilai nilai1 = new Nilai(matakuliahRepo.findById(1).get(), 0d);
+            Nilai nilai2 = new Nilai(matakuliahRepo.findById(2).get(), 0d);
+            Nilai nilai3 = new Nilai(matakuliahRepo.findById(3).get(), 0d);
+            Nilai nilai4 = new Nilai(matakuliahRepo.findById(4).get(), 0d);
+            nilaiRepo.save(nilai1);
+            nilaiRepo.save(nilai2);
+            nilaiRepo.save(nilai3);
+            nilaiRepo.save(nilai4);
+            nilais.add(nilai1);
+            nilais.add(nilai2);
+            nilais.add(nilai3);
+            nilais.add(nilai4);
+            customerRepo.save(new Customer(faker.name().firstName(), faker.name().lastName(), nilais));
         }
 
         menuRepo.save(new Menu("Pegawai"));

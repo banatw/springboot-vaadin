@@ -2,8 +2,12 @@ package com.example.application.views.preview;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -11,9 +15,12 @@ import javax.sql.DataSource;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.server.StreamResourceWriter;
+import com.vaadin.flow.server.VaadinSession;
 
 // import org.vaadin.alejandro.PdfBrowserViewer;
 
@@ -37,12 +44,7 @@ public class PdfPreview extends Dialog {
     private static final long serialVersionUID = 1L;
 
     public PdfPreview(DataSource dataSource, HashMap<String, Object> parameters, String namaFile) {
-        EmbeddedPdf viewer = new EmbeddedPdf(new StreamResource("report.pdf", new InputStreamFactory() {
-
-            /**
-             *
-             */
-            private static final long serialVersionUID = 1L;
+        StreamResource streamResource = new StreamResource("report.pdf", new InputStreamFactory() {
 
             @Override
             public InputStream createInputStream() {
@@ -73,11 +75,11 @@ public class PdfPreview extends Dialog {
                 return null;
             }
 
-        }));
+        });
+        EmbeddedPdf viewer = new EmbeddedPdf(streamResource);
         viewer.setHeight("100%");
-        vLayout.add(new Button("Close", e -> close()), new Button("Cetak", e -> {
-            System.out.println(viewer.getElement().getAttribute("data").getBytes());
-        }), viewer);
+        Anchor download = new Anchor(streamResource, "Download");
+        vLayout.add(new Button("Close", e -> close()), download, viewer);
         vLayout.add();
         vLayout.setSizeFull();
         setSizeFull();
