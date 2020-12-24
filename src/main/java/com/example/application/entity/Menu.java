@@ -22,4 +22,10 @@ public class Menu {
     @NonNull
     private String menuName;
 
+    @NonNull
+    private String path;
+
+    @NonNull
+    private Boolean isModul;
+
 }

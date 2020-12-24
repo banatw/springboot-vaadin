@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Anchor;
@@ -44,41 +46,43 @@ public class PdfPreview extends Dialog {
     private static final long serialVersionUID = 1L;
 
     public PdfPreview(DataSource dataSource, HashMap<String, Object> parameters, String namaFile) {
-        StreamResource streamResource = new StreamResource("report.pdf", new InputStreamFactory() {
+        StreamResource streamResource = new StreamResource(UUID.randomUUID().toString().replace("-", "") + ".pdf",
+                new InputStreamFactory() {
 
-            @Override
-            public InputStream createInputStream() {
-                // TODO Auto-generated method stub
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                try {
-                    // FileInputStream fileInputStream = new
-                    // FileInputStream(getClass().getResourceAsStream("resName"));
-                    JasperReport jasperReport = JasperCompileManager
-                            .compileReport(getClass().getResourceAsStream("/" + namaFile));
-                    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
-                            dataSource.getConnection());
-                    JRPdfExporter pdfExporter = new JRPdfExporter();
-                    SimplePdfReportConfiguration config = new SimplePdfReportConfiguration();
-                    config.setSizePageToContent(true);
-                    pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-                    pdfExporter.setConfiguration(config);
-                    pdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
-                    pdfExporter.exportReport();
-                    byte[] buf = byteArrayOutputStream.toByteArray();
-                    byteArrayOutputStream.close();
-                    return new ByteArrayInputStream(buf);
+                    @Override
+                    public InputStream createInputStream() {
+                        // TODO Auto-generated method stub
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        try {
+                            // FileInputStream fileInputStream = new
+                            // FileInputStream(getClass().getResourceAsStream("resName"));
+                            JasperReport jasperReport = JasperCompileManager
+                                    .compileReport(getClass().getResourceAsStream("/" + namaFile));
+                            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
+                                    dataSource.getConnection());
+                            JRPdfExporter pdfExporter = new JRPdfExporter();
+                            SimplePdfReportConfiguration config = new SimplePdfReportConfiguration();
+                            config.setSizePageToContent(true);
+                            pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+                            pdfExporter.setConfiguration(config);
+                            pdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+                            pdfExporter.exportReport();
+                            byte[] buf = byteArrayOutputStream.toByteArray();
+                            byteArrayOutputStream.close();
+                            return new ByteArrayInputStream(buf);
 
-                } catch (JRException | SQLException | IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return null;
-            }
+                        } catch (JRException | SQLException | IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
 
-        });
+                });
         EmbeddedPdf viewer = new EmbeddedPdf(streamResource);
         viewer.setHeight("100%");
         Anchor download = new Anchor(streamResource, "Download");
+        download.setTarget("_blank");
         vLayout.add(new Button("Close", e -> close()), download, viewer);
         vLayout.add();
         vLayout.setSizeFull();

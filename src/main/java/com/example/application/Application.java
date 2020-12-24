@@ -19,6 +19,8 @@ import com.example.application.repo.RoleRepo;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.login.LoginView;
 import com.github.javafaker.Faker;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.server.VaadinSession;
@@ -29,6 +31,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Service;
+import org.vaadin.artur.helpers.LaunchUtil;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -51,7 +54,7 @@ public class Application extends SpringBootServletInitializer implements Command
     private NilaiRepo nilaiRepo;
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        LaunchUtil.launchBrowserInDevelopmentMode(SpringApplication.run(Application.class, args));
     }
 
     private String generatePassword(String password) {
@@ -84,17 +87,18 @@ public class Application extends SpringBootServletInitializer implements Command
             customerRepo.save(new Customer(faker.name().firstName(), faker.name().lastName(), nilais));
         }
 
-        menuRepo.save(new Menu("Pegawai"));
-        menuRepo.save(new Menu("AboutView"));
-        menuRepo.save(new Menu("HelloWorldView"));
-        menuRepo.save(new Menu("AdminPage"));
-        menuRepo.save(new Menu("UserPage"));
+        menuRepo.save(new Menu("Pegawai", "pegawai", true));
+        menuRepo.save(new Menu("About", "about", true));
+        menuRepo.save(new Menu("Hello", "hello", true));
+        menuRepo.save(new Menu("Admin", "admin", true));
+        menuRepo.save(new Menu("User", "user", true));
+        // menuRepo.save(new Menu("Pegawai Form", "pegawai/form", false));
 
         roleRepo.save(new Role("ROLE_ADMIN", menuRepo.findAll()));
 
         List<Menu> menuUser = new ArrayList<Menu>();
-        menuUser.add(menuRepo.findByMenuName("UserPage"));
-        menuUser.add(menuRepo.findByMenuName("AboutView"));
+        menuUser.add(menuRepo.findByPath("user"));
+        menuUser.add(menuRepo.findByPath("about"));
 
         roleRepo.save(new Role("ROLE_USER", menuUser));
 
@@ -125,7 +129,7 @@ public class Application extends SpringBootServletInitializer implements Command
             List<String> allowedMenus = new ArrayList<String>();
             user.getRoles().stream().forEach(role -> {
                 role.getMenus().stream().forEach(menu -> {
-                    allowedMenus.add(menu.getMenuName());
+                    allowedMenus.add(menu.getPath());
                 });
             });
             return allowedMenus;
@@ -135,10 +139,11 @@ public class Application extends SpringBootServletInitializer implements Command
         public void serviceInit(ServiceInitEvent serviceInitEvent) {
             serviceInitEvent.getSource().addUIInitListener(uiInitEvent -> {
                 uiInitEvent.getUI().addBeforeEnterListener(beforeEnterEvent -> {
-                    String currPage = beforeEnterEvent.getNavigationTarget().getSimpleName();
+                    String currPage = beforeEnterEvent.getLocation().getFirstSegment();
+                    // System.out.println(currPage);
                     if (VaadinSession.getCurrent().getAttribute("user") != null) {
                         User user = (User) VaadinSession.getCurrent().getAttribute("user");
-                        if (!currPage.equalsIgnoreCase("LoginView") && !currPage.equalsIgnoreCase("MainView")) {
+                        if (!currPage.contains("login") && !currPage.contains("mainview")) {
                             if (!getMenus(user).contains(currPage))
                                 beforeEnterEvent.forwardTo(LoginView.class);
                         }

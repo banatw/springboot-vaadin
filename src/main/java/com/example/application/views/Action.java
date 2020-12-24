@@ -1,5 +1,8 @@
 package com.example.application.views;
 
 public enum Action {
-    ADD, EDIT
+    ADD, EDIT;
+
+    private Action() {
+    }
 }
