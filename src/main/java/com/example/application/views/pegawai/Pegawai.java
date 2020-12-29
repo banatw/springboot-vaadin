@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.sql.DataSource;
@@ -99,21 +98,11 @@ public class Pegawai extends Div {
 
         customerGrid.setDataProvider(dataProvider);
         customerGrid.setColumns("firstName", "lastName");
-        // customerGrid.addColumn(new ComponentRenderer<>(item -> {
-        // String queryParameters = "id=" + item.getIdCustomer() + "&act=" + "1";
-        // String route = RouteConfiguration.forSessionScope().getUrl(PegawaiForm.class,
-        // queryParameters);
-        // return new Anchor(route, "Edit");
-        // }));
 
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
-            // String queryParameters = "id=" + item.getIdCustomer() + "&act=" + "1";
-            // String route = RouteConfiguration.forSessionScope().getUrl(PegawaiForm.class,
-            // queryParameters);
-            Map<String, String> params = new HashMap<>();
-            params.put("id", String.valueOf(item.getIdCustomer()));
-            params.put("action", act.EDIT.toString());
-            // QueryParameters queryParameters = QueryParameters.simple(params);
+            // Map<String, String> params = new HashMap<>();
+            // params.put("id", String.valueOf(item.getIdCustomer()));
+            // params.put("action", act.EDIT.toString());
             return new Button("Edit", e -> {
                 UI.getCurrent().navigate(PegawaiForm.class, item.getIdCustomer() + "/" + act.EDIT.toString());
             });
@@ -133,12 +122,18 @@ public class Pegawai extends Div {
             });
             return buttonDelete;
         }));
+        // customerGrid.addColumn(new ComponentRenderer<>(item -> {
+        // return new Button("Cetak", event -> {
+        // HashMap<String, Object> params = new HashMap<String, Object>();
+        // params.put("CustomerId", item.getIdCustomer());
+        // PdfPreview pdfPreview = new PdfPreview(dataSource, params, "tes.jrxml");
+        // pdfPreview.open();
+        // });
+        // }));
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
             return new Button("Cetak", event -> {
-                HashMap<String, Object> params = new HashMap<String, Object>();
-                params.put("CustomerId", item.getIdCustomer());
-                PdfPreview pdfPreview = new PdfPreview(dataSource, params, "tes.jrxml");
-                pdfPreview.open();
+                // UI.getCurrent().navigate(MyPdfBrowser.class, item.getIdCustomer());
+                UI.getCurrent().navigate(PdfPreview.class, String.valueOf(item.getIdCustomer()) + "/tes");
             });
         }));
 
@@ -195,8 +190,8 @@ public class Pegawai extends Div {
             });
             HorizontalLayout bLayout = new HorizontalLayout();
             Button buttonPrintPreview = new Button("Print", event -> {
-                PdfPreview pdfPreview = new PdfPreview(dataSource, null, "all.jrxml");
-                pdfPreview.open();
+                // PdfPreview pdfPreview = new PdfPreview(dataSource, null, "all.jrxml");
+                // pdfPreview.open();
             });
             bLayout.add(filterField, buttonAdd, buttonPrintPreview);
             refreshGrid("");

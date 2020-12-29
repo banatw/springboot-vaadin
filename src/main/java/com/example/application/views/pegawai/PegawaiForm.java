@@ -39,12 +39,14 @@ import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RoutePrefix;
 import com.vaadin.flow.router.WildcardParameter;
 import com.vaadin.flow.shared.Registration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "pegawai/form", layout = MainView.class)
+@RoutePrefix(value = "pegawai")
+@Route(value = "form", layout = MainView.class)
 @PageTitle(value = "Pegawai Form")
 public class PegawaiForm extends Div implements HasUrlParameter<String> {
     @Autowired
@@ -62,75 +64,7 @@ public class PegawaiForm extends Div implements HasUrlParameter<String> {
     private VerticalLayout vLayoutNilai = new VerticalLayout();
 
     public PegawaiForm() {
-        // Binder<Customer> binder = new Binder<>(Customer.class);
-        // binder.forField(firstName).bind(Customer::getFirstName,
-        // Customer::setFirstName);
-        // binder.forField(lastName).bind(Customer::getLastName, Customer::setLastName);
-        // if (act.equals(Action.ADD))
-        // customer = new Customer();
 
-        // if (act.equals(Action.EDIT)) {
-        // customer = customerRepo.findById(customerId.get()).get();
-        // for (Nilai nilai : customer.getLNilais()) {
-        // NumberField numberField = new NumberField("Nilai " +
-        // nilai.getMataKuliah().getNamaMatakuliah());
-        // numberField.setValue(nilai.getNilai());
-        // numberField.setId(String.valueOf(nilai.getId()));
-        // vLayoutNilai.add(numberField);
-        // }
-        // }
-        // binder.readBean(customer);
-        // final String pesan = null;
-        // Button btnSimpan = new Button("Simpan", e -> {
-        // customer.setFirstName(firstName.getValue());
-        // customer.setLastName(lastName.getValue());
-        // customer.setAuditDate(new Date());
-        // List<Nilai> liNilais = new ArrayList<>();
-
-        // Iterator<Component> iterator = vLayoutNilai.getChildren().iterator();
-        // while (iterator.hasNext()) {
-        // Component component = iterator.next();
-        // if (component.getClass().getSimpleName().equalsIgnoreCase("numberfield")) {
-        // NumberField numberField = (NumberField) component;
-        // Nilai nilai =
-        // nilaiRepo.findById(Long.valueOf(numberField.getId().get())).get();
-        // if (numberField.getValue() == null) {
-        // numberField.setInvalid(true);
-        // numberField.setErrorMessage("tidak boleh kosong");
-        // return;
-        // }
-        // nilai.setNilai(numberField.getValue());
-        // nilaiRepo.save(nilai);
-        // liNilais.add(nilai);
-        // }
-        // }
-
-        // // vLayoutNilai.getChildren().forEach(component -> {
-        // // NumberField numberField = (NumberField) component;
-        // // if (numberField.getValue() == null) {
-        // // pesan = numberField.getLabel() + " tidak boleh kosong";
-
-        // // }
-        // // Nilai nilai =
-        // // nilaiRepo.findById(Long.valueOf(numberField.getId().get())).get();
-        // // nilai.setNilai(numberField.getValue());
-        // // nilaiRepo.save(nilai);
-        // // liNilais.add(nilai);
-        // // });
-        // customer.setLNilais(liNilais);
-        // customerRepo.save(customer);
-        // // customerGrid.getDataProvider().refreshAll();
-        // // customerGrid.scrollToStart();
-        // // close();
-        // });
-        // Button btnCancel = new Button("Batal", e -> {
-        // // close();
-        // });
-        // hLayout.add(btnSimpan, btnCancel);
-        // vLayout.add(firstName, lastName, vLayoutNilai, hLayout);
-        // setWidth("80%");
-        // add(vLayout);
-        // setCloseOnEsc(true);
     }
 
     @Override

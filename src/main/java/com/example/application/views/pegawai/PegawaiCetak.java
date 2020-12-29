@@ -1,45 +1,30 @@
-package com.example.application.views.preview;
+package com.example.application.views.pegawai;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.sql.DataSource;
 
 import com.example.application.views.main.MainView;
-import com.example.application.views.pegawai.Pegawai;
 import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RoutePrefix;
-import com.vaadin.flow.router.WildcardParameter;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
-import com.vaadin.flow.server.StreamResourceWriter;
-import com.vaadin.flow.server.VaadinSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-// import org.vaadin.alejandro.PdfBrowserViewer;
+import org.vaadin.alejandro.PdfBrowserViewer;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -51,27 +36,24 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
-@RoutePrefix(value = "pegawai")
-@Route(value = "preview", layout = MainView.class)
-@PageTitle(value = "Preview")
-public class PdfPreview extends Div implements HasUrlParameter<String> {
+@Route(value = "pegawai/cetak", layout = MainView.class)
+@PageTitle(value = "Cetak")
+public class PegawaiCetak extends Div implements HasUrlParameter<String> {
+
+    private Long params;
     @Autowired
     private DataSource dataSource;
+    private String namaFile = "tes.jrxml";
 
-    private String namaFile;
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        // TODO Auto-generated method stub
+        if (attachEvent.isInitialAttach()) {
+            initComponent();
+        }
+    }
 
-    private Long parameterLong;
-
-    private Map<String, Object> parameters = new HashMap<>();
-
-    /**
-     *
-     */
-    private VerticalLayout vLayout = new VerticalLayout();
-
-    private static final long serialVersionUID = 1L;
-
-    private void initComponents() {
+    private void initComponent() {
         StreamResource streamResource = new StreamResource(UUID.randomUUID().toString().replace("-", "") + ".pdf",
                 new InputStreamFactory() {
 
@@ -80,7 +62,8 @@ public class PdfPreview extends Div implements HasUrlParameter<String> {
                         // TODO Auto-generated method stub
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         try {
-                            parameters.put("CustomerId", parameterLong);
+                            Map<String, Object> parameters = new HashMap<>();
+                            parameters.put("CustomerId", params);
                             JasperReport jasperReport = JasperCompileManager
                                     .compileReport(getClass().getResourceAsStream("/" + namaFile));
                             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
@@ -104,28 +87,17 @@ public class PdfPreview extends Div implements HasUrlParameter<String> {
                     }
 
                 });
-        EmbeddedPdf viewer = new EmbeddedPdf(streamResource);
-        viewer.setSizeFull();
-        Anchor download = new Anchor(streamResource, "Download");
-        download.setTarget("_blank");
-        vLayout.add(download, viewer, new Button("Kembali", e -> UI.getCurrent().navigate(Pegawai.class)));
-        vLayout.add();
-        vLayout.setSizeFull();
+
+        PdfBrowserViewer viewer = new PdfBrowserViewer(streamResource);
+        viewer.setHeight("100%");
         setSizeFull();
-        add(vLayout);
+        add(viewer);
     }
 
     @Override
-    public void setParameter(BeforeEvent event, @WildcardParameter String parameter) {
-        this.parameterLong = Long.valueOf(event.getLocation().getSegments().get(2));
-        this.namaFile = event.getLocation().getSegments().get(3) + ".jrxml";
-    }
-
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        if (attachEvent.isInitialAttach()) {
-            initComponents();
-        }
+    public void setParameter(BeforeEvent event, String parameter) {
+        // TODO Auto-generated method stub
+        this.params = Long.valueOf(event.getLocation().getSegments().get(2));
     }
 
 }
