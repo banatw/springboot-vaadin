@@ -1,13 +1,6 @@
 package com.example.application.views.pegawai;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -16,7 +9,8 @@ import com.example.application.repo.CustomerRepo;
 import com.example.application.repo.NilaiRepo;
 import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
-import com.example.application.views.preview.PdfPreview;
+import com.example.application.views.preview.PdfPreviewNoParameter;
+import com.example.application.views.preview.PdfPreviewWithParameter;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -32,8 +26,6 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.InputStreamFactory;
-import com.vaadin.flow.server.StreamResource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -42,15 +34,6 @@ import org.springframework.data.domain.Sort;
 import de.codecamp.vaadin.components.messagedialog.MessageDialog;
 import lombok.Getter;
 import lombok.Setter;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
 @Route(value = "pegawai", layout = MainView.class)
 @PageTitle("Pegawai")
@@ -133,46 +116,50 @@ public class Pegawai extends Div {
         customerGrid.addColumn(new ComponentRenderer<>(item -> {
             return new Button("Cetak", event -> {
                 // UI.getCurrent().navigate(MyPdfBrowser.class, item.getIdCustomer());
-                UI.getCurrent().navigate(PdfPreview.class, String.valueOf(item.getIdCustomer()) + "/tes");
+                UI.getCurrent().navigate(PdfPreviewWithParameter.class, String.valueOf(item.getIdCustomer()) + "/tes");
             });
         }));
 
     }
 
-    StreamResource geStreamResource(HashMap<String, Object> parameters, String namaFile) {
-        return new StreamResource(UUID.randomUUID().toString().replace("-", "") + ".pdf", new InputStreamFactory() {
+    // StreamResource geStreamResource(HashMap<String, Object> parameters, String
+    // namaFile) {
+    // return new StreamResource(UUID.randomUUID().toString().replace("-", "") +
+    // ".pdf", new InputStreamFactory() {
 
-            @Override
-            public InputStream createInputStream() {
-                // TODO Auto-generated method stub
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                try {
-                    // FileInputStream fileInputStream = new
-                    // FileInputStream(getClass().getResourceAsStream("resName"));
-                    JasperReport jasperReport = JasperCompileManager
-                            .compileReport(getClass().getResourceAsStream("/" + namaFile));
-                    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
-                            dataSource.getConnection());
-                    JRPdfExporter pdfExporter = new JRPdfExporter();
-                    SimplePdfReportConfiguration config = new SimplePdfReportConfiguration();
-                    config.setSizePageToContent(true);
-                    pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-                    pdfExporter.setConfiguration(config);
-                    pdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
-                    pdfExporter.exportReport();
-                    byte[] buf = byteArrayOutputStream.toByteArray();
-                    byteArrayOutputStream.close();
-                    return new ByteArrayInputStream(buf);
+    // @Override
+    // public InputStream createInputStream() {
+    // // TODO Auto-generated method stub
+    // ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    // try {
+    // // FileInputStream fileInputStream = new
+    // // FileInputStream(getClass().getResourceAsStream("resName"));
+    // JasperReport jasperReport = JasperCompileManager
+    // .compileReport(getClass().getResourceAsStream("/" + namaFile));
+    // JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
+    // parameters,
+    // dataSource.getConnection());
+    // JRPdfExporter pdfExporter = new JRPdfExporter();
+    // SimplePdfReportConfiguration config = new SimplePdfReportConfiguration();
+    // config.setSizePageToContent(true);
+    // pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    // pdfExporter.setConfiguration(config);
+    // pdfExporter.setExporterOutput(new
+    // SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+    // pdfExporter.exportReport();
+    // byte[] buf = byteArrayOutputStream.toByteArray();
+    // byteArrayOutputStream.close();
+    // return new ByteArrayInputStream(buf);
 
-                } catch (JRException | SQLException | IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return null;
-            }
+    // } catch (JRException | SQLException | IOException e) {
+    // // TODO Auto-generated catch block
+    // e.printStackTrace();
+    // }
+    // return null;
+    // }
 
-        });
-    }
+    // });
+    // }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
@@ -192,6 +179,7 @@ public class Pegawai extends Div {
             Button buttonPrintPreview = new Button("Print", event -> {
                 // PdfPreview pdfPreview = new PdfPreview(dataSource, null, "all.jrxml");
                 // pdfPreview.open();
+                UI.getCurrent().navigate(PdfPreviewNoParameter.class, "all");
             });
             bLayout.add(filterField, buttonAdd, buttonPrintPreview);
             refreshGrid("");

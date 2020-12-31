@@ -54,7 +54,7 @@ import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 @RoutePrefix(value = "pegawai")
 @Route(value = "preview", layout = MainView.class)
 @PageTitle(value = "Preview")
-public class PdfPreview extends Div implements HasUrlParameter<String> {
+public class PdfPreviewWithParameter extends Div implements HasUrlParameter<String> {
     @Autowired
     private DataSource dataSource;
 
