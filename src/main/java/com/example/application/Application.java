@@ -3,7 +3,6 @@ package com.example.application;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.example.application.entity.Customer;
 import com.example.application.entity.Matakuliah;
@@ -19,8 +18,6 @@ import com.example.application.repo.RoleRepo;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.login.LoginView;
 import com.github.javafaker.Faker;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.server.VaadinSession;

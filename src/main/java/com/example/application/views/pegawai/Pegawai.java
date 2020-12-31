@@ -47,12 +47,6 @@ public class Pegawai extends Div {
     private static Action act;
     private VerticalLayout vLayout = new VerticalLayout();
 
-    @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private NilaiRepo nilaiRepo;
-
     /**
      * InnerPegawai
      */
@@ -87,7 +81,7 @@ public class Pegawai extends Div {
             // params.put("id", String.valueOf(item.getIdCustomer()));
             // params.put("action", act.EDIT.toString());
             return new Button("Edit", e -> {
-                UI.getCurrent().navigate(PegawaiForm.class, item.getIdCustomer() + "/" + act.EDIT.toString());
+                UI.getCurrent().navigate(PegawaiForm.class, item.getIdCustomer() + "/" + Action.EDIT.toString());
             });
 
         }));
