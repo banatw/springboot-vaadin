@@ -152,9 +152,19 @@
             <version>3.0.1</version>
         </dependency>
         <dependency>
+            <groupId>sk.smartbase.component</groupId>
+            <artifactId>qr-scanner</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>sk.smartbase.component</groupId>
+            <artifactId>barcode-scanner</artifactId>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>

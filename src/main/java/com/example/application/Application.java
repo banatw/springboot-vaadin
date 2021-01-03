@@ -89,6 +89,9 @@ public class Application extends SpringBootServletInitializer implements Command
         menuRepo.save(new Menu("Hello", "hello", true));
         menuRepo.save(new Menu("Admin", "admin", true));
         menuRepo.save(new Menu("User", "user", true));
+        menuRepo.save(new Menu("Camera", "camera", true));
+        menuRepo.save(new Menu("Qr Scanner", "qrscanner", true));
+        menuRepo.save(new Menu("Barcode Scanner", "barcodescanner", true));
         // menuRepo.save(new Menu("Pegawai Form", "pegawai/form", false));
 
         roleRepo.save(new Role("ROLE_ADMIN", menuRepo.findAll()));

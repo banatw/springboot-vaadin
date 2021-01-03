@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.example.application.entity.User;
 import com.example.application.repo.UserRepo;
 import com.example.application.views.main.MainView;
+import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
