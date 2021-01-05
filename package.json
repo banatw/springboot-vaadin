@@ -49,7 +49,13 @@
     "open": "^7.2.1",
     "@lrnwebcomponents/pdf-browser-viewer": "2.1.4",
     "@granite-elements/granite-qrcode-scanner": "3.0.3",
-    "quagga": "0.12.1"
+    "quagga": "0.12.1",
+    "leaflet": "1.6.0",
+    "leaflet.heat": "0.2.0",
+    "leaflet-kmz": "1.0.4",
+    "leaflet-canvas-marker": "0.2.1",
+    "leaflet.markercluster": "1.4.1",
+    "leaflet.fullscreen": "1.6.0"
   },
   "devDependencies": {
     "webpack": "4.42.0",
@@ -112,7 +118,13 @@
       "open": "^7.2.1",
       "@lrnwebcomponents/pdf-browser-viewer": "2.1.4",
       "@granite-elements/granite-qrcode-scanner": "3.0.3",
-      "quagga": "0.12.1"
+      "quagga": "0.12.1",
+      "leaflet.heat": "0.2.0",
+      "leaflet-kmz": "1.0.4",
+      "leaflet-canvas-marker": "0.2.1",
+      "leaflet.markercluster": "1.4.1",
+      "leaflet.fullscreen": "1.6.0",
+      "leaflet": "1.6.0"
     },
     "devDependencies": {
       "webpack-babel-multi-target-plugin": "2.3.3",
@@ -126,6 +138,6 @@
       "webpack-dev-server": "3.10.3",
       "chokidar": "^3.4.0"
     },
-    "hash": "c07af266cf9c6aecf4706db401e6b191b572d78d8a95984661914ceb2c8d4bbb"
+    "hash": "e1fdbf2fa9a4d0173278314757cb2b30ff25bc7caa08fb4aa2f2a7102c63d626"
   }
 }

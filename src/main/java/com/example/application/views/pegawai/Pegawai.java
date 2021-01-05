@@ -2,11 +2,8 @@ package com.example.application.views.pegawai;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import com.example.application.entity.Customer;
 import com.example.application.repo.CustomerRepo;
-import com.example.application.repo.NilaiRepo;
 import com.example.application.views.Action;
 import com.example.application.views.main.MainView;
 import com.example.application.views.preview.PdfPreviewNoParameter;
