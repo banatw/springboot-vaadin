@@ -22,6 +22,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.material.Material;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -105,8 +107,8 @@ public class MainView extends AppLayout {
         VerticalLayout verticalLayout = new VerticalLayout();
         List<Menu> menus = new ArrayList<>();
         user.getRoles().stream().forEach(role -> {
-            role.getMenus().stream().filter(menu -> menu.getIsModul() == true).collect(Collectors.toList()).stream()
-                    .forEach(menu -> {
+            role.getMenus().stream().filter(menu_ -> menu_.getShowInMenuBar() == true).collect(Collectors.toList())
+                    .stream().forEach(menu -> {
                         // String stringHref = "<a router-link href='" + menu.getPath() + "'>" +
                         // menu.getMenuName() + "</a>";
                         // Html link = new Html(stringHref);

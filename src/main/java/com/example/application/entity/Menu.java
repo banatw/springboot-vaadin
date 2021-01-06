@@ -26,6 +26,6 @@ public class Menu {
     private String path;
 
     @NonNull
-    private Boolean isModul;
+    private Boolean showInMenuBar;
 
 }

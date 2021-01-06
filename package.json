@@ -50,12 +50,7 @@
     "@lrnwebcomponents/pdf-browser-viewer": "2.1.4",
     "@granite-elements/granite-qrcode-scanner": "3.0.3",
     "quagga": "0.12.1",
-    "leaflet": "1.6.0",
-    "leaflet.heat": "0.2.0",
-    "leaflet-kmz": "1.0.4",
-    "leaflet-canvas-marker": "0.2.1",
-    "leaflet.markercluster": "1.4.1",
-    "leaflet.fullscreen": "1.6.0"
+    "@flowingcode/google-map": "3.0.1"
   },
   "devDependencies": {
     "webpack": "4.42.0",
@@ -124,7 +119,8 @@
       "leaflet-canvas-marker": "0.2.1",
       "leaflet.markercluster": "1.4.1",
       "leaflet.fullscreen": "1.6.0",
-      "leaflet": "1.6.0"
+      "leaflet": "1.6.0",
+      "@flowingcode/google-map": "3.0.1"
     },
     "devDependencies": {
       "webpack-babel-multi-target-plugin": "2.3.3",
@@ -138,6 +134,6 @@
       "webpack-dev-server": "3.10.3",
       "chokidar": "^3.4.0"
     },
-    "hash": "e1fdbf2fa9a4d0173278314757cb2b30ff25bc7caa08fb4aa2f2a7102c63d626"
+    "hash": "4a42c8cffd328abe455b04b67d8773ecedf82ab062b753036845f090f30f633a"
   }
 }

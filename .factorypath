@@ -155,6 +155,5 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/de/codecamp/vaadin/vaadin-message-dialog/1.0.0/vaadin-message-dialog-1.0.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/xerces/xercesImpl/2.12.0/xercesImpl-2.12.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/vaadin/leaflet4vaadin/0.5.0/leaflet4vaadin-0.5.0.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/de/grundid/opendatalab/geojson-jackson/1.13/geojson-jackson-1.13.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/flowingcode/vaadin/addons/google-maps/1.1.0/google-maps-1.1.0.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>

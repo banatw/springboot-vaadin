@@ -11,5 +11,5 @@ public interface MenuRepo extends JpaRepository<Menu, Integer> {
 
     public Menu findByPath(String path);
 
-    public List<Menu> findByIsModul(Boolean isModul);
+    public List<Menu> findByShowInMenuBar(Boolean showInMenuBar);
 }
