@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-@Route("login")s
+@Route("login")
 public class LoginView extends LoginOverlay {
     @Autowired
     private UserRepo userRepo;
